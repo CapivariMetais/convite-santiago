@@ -9,7 +9,8 @@ Convite interativo do aniversário de 9 anos do Santiago (domingo, 25/10, Capiva
 
 ## Arquivos
 - `index.html`, `amigos/index.html`, `familia/index.html`: o convite (mesmo conteúdo, muda só a trilha inicial e a capa de prévia)
-- `capa-geral.png`, `capa-amigos.png`, `capa-familia.png`: capas que aparecem ao compartilhar o link no WhatsApp
+- `capa-geral.jpg`, `capa-amigos.jpg`, `capa-familia.jpg`: capas que aparecem ao compartilhar o link no WhatsApp
 - `render.yaml`: configuração do site estático no Render
+- Trilha sonora gerada no próprio navegador (sem arquivos de áudio).
 
 Se o endereço do Render for diferente de `https://convite-santiago.onrender.com`, troque esse endereço nas tags `og:` dos três `index.html` para a capa aparecer.

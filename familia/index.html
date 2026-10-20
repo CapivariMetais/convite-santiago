@@ -247,14 +247,14 @@ section.block{display:flex;flex-direction:column;gap:14px}
     <div class="guide-face"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="12" y="51" width="40" height="8" rx="4" fill="#8a5a34" transform="rotate(-8 32 55)"/><rect x="12" y="51" width="40" height="8" rx="4" fill="#6b4122" transform="rotate(8 32 55)"/><path d="M32 3 C44 17 51 28 49 38 C47 48 39 53 32 53 C25 53 17 48 15 38 C13 28 21 21 25 11 C27 19 29 21 31 21 C31 15 30 9 32 3Z" fill="#ff8a3d"/><path d="M32 22 C40 30 43 36 41 42 C39 49 25 49 23 42 C21 36 25 30 32 22Z" fill="#ffd166"/><circle cx="27" cy="35" r="3.2" fill="#2b1a10"/><circle cx="37" cy="35" r="3.2" fill="#2b1a10"/><circle cx="28" cy="34" r="1.1" fill="#fff"/><circle cx="38" cy="34" r="1.1" fill="#fff"/><circle cx="23" cy="40" r="2" fill="#ff6b6b" opacity=".6"/><circle cx="41" cy="40" r="2" fill="#ff6b6b" opacity=".6"/><path class="mouth" d="M28 41 Q32 45 36 41" stroke="#2b1a10" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg></div>
     <span class="eyebrow">Convite com som</span>
     <h2>Aumenta o volume!</h2>
-    <p>O Faísca, guia do acampamento, vai te mostrar o convite do Santiago passo a passo.</p>
+    <p>Tem trilha sonora de acampamento! O Faísca, guia do acampamento, vai te mostrar o convite do Santiago passo a passo.</p>
     <button class="btn big-btn" id="start-sound">▶ Começar a aventura</button>
     <button class="switch" id="start-mute">Entrar sem som</button>
   </div>
 </div>
 <div class="ctl" id="ctl">
   <button type="button" id="ctl-music" aria-pressed="true" aria-label="Música e efeitos" title="Música e efeitos">🎵</button>
-  <button type="button" id="ctl-voice" aria-pressed="true" aria-label="Voz do guia" title="Voz do guia">🗣️</button>
+  <button type="button" id="ctl-voice" aria-pressed="false" aria-label="Voz do guia" title="Voz do guia" hidden>🗣️</button>
 </div>
 <div class="guide" id="guide" hidden>
   <button type="button" class="guide-face" id="guide-face" aria-label="Ouvir o Faísca de novo"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="12" y="51" width="40" height="8" rx="4" fill="#8a5a34" transform="rotate(-8 32 55)"/><rect x="12" y="51" width="40" height="8" rx="4" fill="#6b4122" transform="rotate(8 32 55)"/><path d="M32 3 C44 17 51 28 49 38 C47 48 39 53 32 53 C25 53 17 48 15 38 C13 28 21 21 25 11 C27 19 29 21 31 21 C31 15 30 9 32 3Z" fill="#ff8a3d"/><path d="M32 22 C40 30 43 36 41 42 C39 49 25 49 23 42 C21 36 25 30 32 22Z" fill="#ffd166"/><circle cx="27" cy="35" r="3.2" fill="#2b1a10"/><circle cx="37" cy="35" r="3.2" fill="#2b1a10"/><circle cx="28" cy="34" r="1.1" fill="#fff"/><circle cx="38" cy="34" r="1.1" fill="#fff"/><circle cx="23" cy="40" r="2" fill="#ff6b6b" opacity=".6"/><circle cx="41" cy="40" r="2" fill="#ff6b6b" opacity=".6"/><path class="mouth" d="M28 41 Q32 45 36 41" stroke="#2b1a10" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg></button>
@@ -518,8 +518,8 @@ section.block{display:flex;flex-direction:column;gap:14px}
 
 <script>
 /* ===== Som: trilha, efeitos e voz do Faísca ===== */
-const SND={ctx:null,master:null,music:null,sfxG:null,NB:null,started:false,timer:null,step:0,next:0,bpm:132,lead:"square",musicOn:true,voiceOn:true,gen:0};
-try{const p=JSON.parse(localStorage.getItem("santiago9:snd")); if(p){SND.musicOn=p.m!==false; SND.voiceOn=p.v!==false;}}catch(e){}
+const SND={ctx:null,master:null,music:null,sfxG:null,NB:null,started:false,timer:null,step:0,next:0,bpm:132,lead:"square",musicOn:true,voiceOn:false,gen:0};
+try{const p=JSON.parse(localStorage.getItem("santiago9:snd")); if(p){SND.musicOn=p.m!==false;}}catch(e){}
 function saveSnd(){try{localStorage.setItem("santiago9:snd",JSON.stringify({m:SND.musicOn,v:SND.voiceOn}))}catch(e){}}
 const mf=m=>440*Math.pow(2,(m-69)/12);
 function audioInit(){
@@ -584,7 +584,7 @@ const L=(t,s,id)=>({t,s:s||t,id});
 const REC={}; const AUDIO_BASE=window.AUDIO_BASE||"/audio/";
 const REC_IDS=["gate1","gate2","gate3","nome","trilha_amigos","trilha_familia","amigos1","amigos2","amigos3","amigos4","familia1","familia2","familia3","familia4","prof1","checklist","jogos_amigos","jogos_familia","mapa","rsvp_amigos","rsvp_familia","parabens"];
 function loadRec(){ REC_IDS.forEach(id=>{ try{ const a=new Audio(); a.preload="auto"; a.addEventListener("canplaythrough",()=>{REC[id]=a;},{once:true}); a.addEventListener("error",()=>{},{once:true}); a.src=AUDIO_BASE+id+".mp3"; }catch(e){} }); }
-const hasTTS=("speechSynthesis" in window)&&("SpeechSynthesisUtterance" in window);
+const hasTTS=false; // voz desativada: fica só a trilha sonora
 let VOICE=null, VQ=[], speaking=false, lastLines=[], hideT;
 function pickVoice(){ try{ const vs=speechSynthesis.getVoices().filter(v=>/^pt/i.test(v.lang)); const br=vs.filter(v=>/BR/i.test(v.lang)); const pool=br.length?br:vs;
   const sc=v=>(/natural|neural|online|premium|enhanced/i.test(v.name)?10:0)+(/francisca|thalita|leila|luciana|vit[oó]ria|google/i.test(v.name)?5:0)+(v.localService===false?2:0);
@@ -645,15 +645,15 @@ function syncCtl(){ document.getElementById("ctl-music").setAttribute("aria-pres
 function begin(withSound){
   SND.started=true;
   if(!withSound){ SND.musicOn=false; SND.voiceOn=false; }
-  audioInit(); loadRec(); syncCtl(); startMusic();
+  audioInit(); syncCtl(); startMusic();
   document.getElementById("start").hidden=true; document.getElementById("guide").hidden=false;
   onView(typeof state!=="undefined"?state.view:"gate");
 }
-document.getElementById("start-sound").addEventListener("click",()=>{ SND.musicOn=true; SND.voiceOn=true; begin(true); });
+document.getElementById("start-sound").addEventListener("click",()=>{ SND.musicOn=true; SND.voiceOn=false; begin(true); });
 document.getElementById("start-mute").addEventListener("click",()=>begin(false));
 document.getElementById("ctl-music").addEventListener("click",()=>{ SND.musicOn=!SND.musicOn; audioInit(); SND.musicOn?startMusic():stopMusic(); syncCtl(); saveSnd(); });
 document.getElementById("ctl-voice").addEventListener("click",()=>{ SND.voiceOn=!SND.voiceOn; if(!SND.voiceOn&&hasTTS) try{speechSynthesis.cancel();}catch(e){} syncCtl(); saveSnd(); if(SND.voiceOn&&SND.started) say(lastLines.length?lastLines:NARR[state.view]()); });
-document.getElementById("guide-face").addEventListener("click",()=>{ if(!SND.voiceOn){ SND.voiceOn=true; syncCtl(); } say(lastLines.length?lastLines:NARR[state.view]()); });
+document.getElementById("guide-face").addEventListener("click",()=>{ say(lastLines.length?lastLines:NARR[state.view]()); });
 document.getElementById("bubble-x").addEventListener("click",()=>{ document.getElementById("bubble").hidden=true; });
 document.addEventListener("visibilitychange",()=>{ if(document.hidden){ stopMusic(); if(hasTTS) try{speechSynthesis.cancel();}catch(e){} } else if(SND.started) startMusic(); });
 let nameSaid=false, nT;
