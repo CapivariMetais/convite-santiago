@@ -1,0 +1,912 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Acampamento do Santiago - 9 anos</title>
+<meta name="description" content="Domingo, 25 de outubro, em Capivari do Sul. Toque para abrir seu convite interativo.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:url" content="https://convite-santiago.onrender.com/">
+<meta property="og:title" content="Você está convidado! Acampamento do Santiago - 9 anos">
+<meta property="og:description" content="Domingo, 25 de outubro, em Capivari do Sul. Toque para abrir seu convite interativo.">
+<meta property="og:image" content="https://convite-santiago.onrender.com/capa-geral.png">
+<meta property="og:image:secure_url" content="https://convite-santiago.onrender.com/capa-geral.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://convite-santiago.onrender.com/capa-geral.png">
+<meta name="theme-color" content="#1e3a2d">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M32 3 C44 17 51 28 49 38 C47 48 39 53 32 53 C25 53 17 48 15 38 C13 28 21 21 25 11 C27 19 29 21 31 21 C31 15 30 9 32 3Z' fill='%23ff8a3d'/%3E%3C/svg%3E">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<script>window.START_VIEW='';</script>
+</head>
+<body>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Baloo+2:wght@500;600;700;800&family=Caveat:wght@600;700&display=swap">
+<style>
+/* Layout: uma porteira de acampamento que encaminha o convidado; duas trilhas (amigos / família) com cena ilustrada, cartões de informação, jogos, mapa e confirmação. Visual único e deliberado por trilha (sem modo escuro). */
+:root{
+  --f-display:"Lilita One","Arial Rounded MT Bold","Trebuchet MS",sans-serif;
+  --f-body:"Baloo 2","Trebuchet MS","Segoe UI",sans-serif;
+  --f-hand:"Caveat","Comic Sans MS",cursive;
+  /* porteira (entardecer na mata) */
+  --bg:#1e3a2d; --ink:#fdf3e1; --muted:#cfe0cf; --accent:#ff8a3d; --accent-2:#ffd166;
+  --wood:#8a5a34; --wood-dark:#5e3a1f; --card:#284a3a; --line:rgba(253,243,225,.18);
+  --sky1:#f7b267; --sky2:#f4845f; --hill:#2d5a43; --pine:#163a29; --tent:#ff8a3d; --tent2:#d9622b;
+  color-scheme:light;
+}
+body.amigos{
+  --bg:#eaf2de; --ink:#1d3326; --muted:#4d6656; --accent:#f26a21; --accent-2:#f6b13b;
+  --wood:#9b6436; --wood-dark:#6b4122; --card:#fffaf0; --line:rgba(29,51,38,.14);
+  --sky1:#bfe3f2; --sky2:#e9f6fb; --hill:#7fb069; --pine:#2f5d3f; --tent:#f26a21; --tent2:#c94f12;
+}
+body.familia{
+  --bg:#fbeee2; --ink:#3a2233; --muted:#7a5a6c; --accent:#d9547a; --accent-2:#f2a541;
+  --wood:#9b6436; --wood-dark:#6b4122; --card:#fffaf5; --line:rgba(58,34,51,.13);
+  --sky1:#f9c784; --sky2:#f6a5a5; --hill:#c08497; --pine:#6d3b5e; --tent:#f2a541; --tent2:#d0802a;
+}
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.5;transition:background .5s}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 56px;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{font-family:var(--f-display);font-weight:400;line-height:1.05;text-wrap:balance;margin:0;letter-spacing:.3px}
+h2{font-size:clamp(1.6rem,4.5vw,2.2rem)}
+h3{font-size:1.3rem}
+p{margin:0}
+button{font-family:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent-2);outline-offset:3px;border-radius:10px}
+.view{display:flex;flex-direction:column;gap:28px}
+.eyebrow{font-weight:800;text-transform:uppercase;letter-spacing:.14em;font-size:.78rem;color:var(--accent)}
+.hand{font-family:var(--f-hand);font-size:1.6rem;line-height:1.1}
+
+/* ---------- cena ---------- */
+.scene{position:relative;border-radius:22px;overflow:hidden;aspect-ratio:16/8;max-width:100%;min-height:200px;background:linear-gradient(var(--sky2),var(--sky1))}
+.scene svg{position:absolute;inset:0;width:100%;height:100%}
+.flame{transform-origin:50% 100%;animation:flick 1.1s ease-in-out infinite alternate}
+.flame.b{animation-duration:.8s;animation-delay:-.3s}
+@keyframes flick{0%{transform:scaleY(1) skewX(0)}50%{transform:scaleY(1.12) skewX(3deg)}100%{transform:scaleY(.92) skewX(-3deg)}}
+.smoke{animation:rise 3.5s linear infinite;opacity:0}
+.smoke.s2{animation-delay:1.2s}.smoke.s3{animation-delay:2.3s}
+@keyframes rise{0%{transform:translateY(0) scale(.6);opacity:0}20%{opacity:.55}100%{transform:translateY(-70px) scale(1.6);opacity:0}}
+
+/* ---------- porteira ---------- */
+.gate-hero{display:flex;flex-direction:column;gap:14px;text-align:center;align-items:center}
+.gate-hero h1{font-size:clamp(2.4rem,9vw,4.4rem);color:var(--accent-2);text-shadow:0 3px 0 var(--wood-dark)}
+.gate-hero .sub{color:var(--muted);max-width:34ch}
+.plaque{display:inline-flex;align-items:center;gap:10px;background:var(--wood);color:#fff4df;font-family:var(--f-display);font-size:1.25rem;padding:6px 18px;border-radius:10px;box-shadow:inset 0 -4px 0 var(--wood-dark),0 6px 0 rgba(0,0,0,.18);transform:rotate(-2deg)}
+.signpost{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px;display:flex;flex-direction:column;gap:16px}
+.signpost label{font-weight:700}
+.field{display:flex;flex-direction:column;gap:6px}
+input[type=text],input[type=number],textarea{font:inherit;font-size:1rem;padding:12px 14px;border-radius:12px;border:2px solid var(--line);background:rgba(255,255,255,.08);color:var(--ink);width:100%}
+body.amigos input,body.amigos textarea,body.familia input,body.familia textarea{background:#fff}
+input::placeholder,textarea::placeholder{color:var(--muted);opacity:.8}
+.arrows{display:grid;gap:12px}
+.arrow{position:relative;display:flex;align-items:center;gap:14px;text-align:left;border:0;background:var(--wood);color:#fff4df;padding:14px 46px 14px 16px;border-radius:12px;clip-path:polygon(0 0,calc(100% - 26px) 0,100% 50%,calc(100% - 26px) 100%,0 100%);box-shadow:inset 0 -5px 0 var(--wood-dark);transition:transform .15s}
+.arrow:nth-child(2){margin-left:18px;background:#a06a3c}
+.arrow:nth-child(3){margin-left:6px}
+.arrow:hover{transform:translateX(6px)}
+.arrow .ico{font-size:1.9rem;flex:none}
+.arrow b{font-family:var(--f-display);font-weight:400;font-size:1.25rem;display:block;line-height:1.1}
+.arrow small{opacity:.85;font-size:.92rem}
+.loading{display:flex;flex-direction:column;align-items:center;gap:10px;padding:40px 0;text-align:center}
+.loading .tentflap{font-size:3.5rem;animation:bob 0.6s ease-in-out infinite alternate}
+@keyframes bob{to{transform:translateY(-8px) rotate(4deg)}}
+
+/* ---------- hero das trilhas ---------- */
+.hero{display:flex;flex-direction:column;gap:16px}
+.hero h1{font-size:clamp(2.3rem,8vw,4rem);color:var(--ink)}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.greet{font-family:var(--f-hand);font-size:1.8rem;color:var(--accent)}
+.lead{font-size:1.1rem;max-width:58ch;color:var(--muted)}
+.big9{position:absolute;right:4%;top:6%;width:clamp(70px,16vw,120px);aspect-ratio:1;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--f-display);font-size:clamp(2.4rem,8vw,4rem);display:grid;place-items:center;box-shadow:0 6px 0 rgba(0,0,0,.15);transform:rotate(8deg)}
+.big9 span{font-size:.28em;display:block;margin-top:-.6em;letter-spacing:.1em}
+.infos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:620px){.infos{grid-template-columns:1fr}}
+.info{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:flex;gap:12px;align-items:flex-start;min-width:0}
+.info .i{font-size:1.6rem;line-height:1}
+.info .k{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}
+.info .v{font-weight:800;font-size:1.15rem;line-height:1.2}
+.info .v small{display:block;font-weight:600;font-size:.9rem;color:var(--muted)}
+.info.hl{background:var(--accent);color:#fff;border-color:transparent}
+.info.hl .k,.info.hl .v small{color:rgba(255,255,255,.85)}
+
+section.block{display:flex;flex-direction:column;gap:14px}
+.block-head{display:flex;flex-direction:column;gap:4px}
+.block-head p{color:var(--muted)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px}
+.games{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media (max-width:760px){.games{grid-template-columns:1fr}}
+.game{display:flex;flex-direction:column;gap:12px;min-width:0}
+.game-bar{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;font-weight:700;font-variant-numeric:tabular-nums}
+.chip{background:var(--bg);border-radius:999px;padding:3px 12px;font-size:.92rem}
+.btn{border:0;background:var(--accent);color:#fff;font-weight:800;font-size:1rem;padding:11px 18px;border-radius:12px;box-shadow:inset 0 -4px 0 rgba(0,0,0,.18);transition:transform .1s}
+.btn:active{transform:translateY(2px)}
+.btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--line);box-shadow:none}
+.btn.wood{background:var(--wood);box-shadow:inset 0 -4px 0 var(--wood-dark)}
+.msg{min-height:1.6em;font-weight:700;text-align:center}
+
+/* churrasqueira */
+.grill{position:relative;background:#2b2b2b;border-radius:16px;padding:18px 12px 26px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;background-image:repeating-linear-gradient(90deg,transparent 0 18px,#444 18px 21px),radial-gradient(ellipse at 50% 120%,#ff6b1a 0,#b23a0a 35%,#2b2b2b 70%)}
+.grill::after{content:"";position:absolute;left:12%;right:12%;bottom:-14px;height:14px;background:#555;border-radius:0 0 10px 10px}
+.slot{height:150px;border:0;background:transparent;border-radius:10px;position:relative;display:flex;justify-content:center;align-items:center;padding:0}
+.skewer{position:relative;width:16px;height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;transition:opacity .2s}
+.skewer::before{content:"";position:absolute;inset:-4px auto -4px 50%;width:4px;margin-left:-2px;background:#d9b382;border-radius:2px;z-index:0}
+.skewer i{position:relative;z-index:1;width:30px;height:26px;border-radius:7px;background:var(--meat,#f4a3a3);box-shadow:inset 0 -4px 0 rgba(0,0,0,.18)}
+.skewer i:nth-child(2){width:26px;background:var(--veg,#e85d4a)}
+.slot.empty .skewer{opacity:0}
+.slot.ponto{animation:sizzle .25s linear infinite alternate}
+.slot.ponto::after{content:"No ponto!";position:absolute;top:-6px;left:50%;transform:translateX(-50%);background:#ffd166;color:#3b2418;font-size:.7rem;font-weight:800;padding:1px 6px;border-radius:6px;white-space:nowrap}
+@keyframes sizzle{to{transform:translateY(-2px)}}
+.pop{position:absolute;left:50%;top:35%;transform:translateX(-50%);font-weight:800;color:#fff;text-shadow:0 2px 0 #000;pointer-events:none;animation:popup .8s ease-out forwards;white-space:nowrap;font-size:.95rem}
+@keyframes popup{to{transform:translate(-50%,-40px);opacity:0}}
+
+/* memória */
+.mem{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.card{aspect-ratio:1;border:0;border-radius:12px;background:var(--wood);position:relative;perspective:600px;padding:0;box-shadow:inset 0 -4px 0 var(--wood-dark)}
+.card .face{position:absolute;inset:0;display:grid;place-items:center;border-radius:12px;backface-visibility:hidden;transition:transform .35s;font-size:clamp(1.4rem,6vw,2.1rem)}
+.card .front{background:repeating-linear-gradient(45deg,var(--wood) 0 10px,var(--wood-dark) 10px 12px);color:#fff4df;font-family:var(--f-display);font-size:1.1rem}
+.card .back{background:#fff;transform:rotateY(180deg);border:3px solid var(--accent-2)}
+.card.open .front{transform:rotateY(180deg)}
+.card.open .back{transform:rotateY(360deg)}
+.card.done .back{border-color:var(--accent);background:#fff8e6}
+
+/* velinhas */
+.cake-stage{display:flex;justify-content:center;padding-top:10px}
+.cake{position:relative;width:min(100%,320px)}
+.candles{display:flex;justify-content:center;gap:clamp(4px,2vw,10px);height:92px;align-items:flex-end;position:relative;z-index:2}
+.candle{border:0;background:transparent;padding:0;display:flex;flex-direction:column;align-items:center;width:22px}
+.candle .fl{width:14px;height:22px;background:radial-gradient(ellipse at 50% 70%,#fff6b0 0,#ffb02e 45%,#ff6a00 75%,transparent 76%);border-radius:50% 50% 50% 50%/60% 60% 40% 40%;animation:flick .5s ease-in-out infinite alternate;transform-origin:50% 100%}
+.candle .wick{width:2px;height:6px;background:#3b2418}
+.candle .stick{width:12px;height:52px;border-radius:3px;background:repeating-linear-gradient(-45deg,#fff 0 6px,var(--accent) 6px 12px)}
+.candle.out .fl{background:none;animation:none}
+.candle.out .fl::after{content:"";display:block;width:10px;height:10px;margin:4px auto 0;border-radius:50%;background:rgba(120,120,120,.5);animation:rise 1.4s ease-out forwards}
+.tier{height:62px;border-radius:14px 14px 8px 8px;background:#fff;border:4px solid var(--accent);position:relative;margin-top:-4px;background-image:radial-gradient(circle at 12px 0,var(--accent) 9px,transparent 10px);background-size:24px 18px;background-repeat:repeat-x}
+.tier.t2{height:72px;margin:0 -22px;background-color:#ffe3ea;border-color:var(--ink);background-image:none}
+.tier.t2::before{content:"Santiago 9";position:absolute;inset:0;display:grid;place-items:center;font-family:var(--f-hand);font-size:1.8rem;color:var(--accent)}
+.plate{height:12px;margin:0 -40px;background:var(--line);border-radius:50%}
+
+/* checklist */
+.check{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:560px){.check{grid-template-columns:1fr}}
+.check button{display:flex;align-items:center;gap:10px;text-align:left;border:2px dashed var(--line);background:var(--card);color:var(--ink);padding:10px 14px;border-radius:14px;font-weight:700;font-size:1rem}
+.check button .box{width:26px;height:26px;flex:none;border-radius:8px;border:2px solid var(--accent);display:grid;place-items:center;color:#fff;font-size:1rem}
+.check button[aria-pressed=true]{border-style:solid;border-color:var(--accent)}
+.check button[aria-pressed=true] .box{background:var(--accent)}
+.check button[aria-pressed=true] .box::after{content:"✓"}
+
+/* mapa */
+.map-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:16px;align-items:stretch}
+@media (max-width:700px){.map-grid{grid-template-columns:1fr}}
+.map-svg{width:100%;height:auto;border-radius:16px;display:block;background:#e7efd9}
+.pin{animation:pin 1.2s ease-in-out infinite alternate}
+@keyframes pin{to{transform:translateY(-6px)}}
+.addr{display:flex;flex-direction:column;gap:12px;min-width:0}
+.addr .street{font-weight:800;font-size:1.2rem;line-height:1.25}
+.addr .ref{color:var(--muted)}
+.links{display:flex;flex-wrap:wrap;gap:8px}
+.links a{text-decoration:none}
+
+/* confirmação */
+.rsvp{display:grid;gap:12px}
+.row2{display:grid;grid-template-columns:minmax(0,1fr) 140px;gap:12px}
+@media (max-width:480px){.row2{grid-template-columns:1fr}}
+.preview{background:var(--bg);border-radius:12px;padding:12px 14px;white-space:pre-wrap;font-size:.95rem;color:var(--muted);border:1px dashed var(--line)}
+.wa{display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;background:#25a35a;color:#fff;font-weight:800;padding:13px 18px;border-radius:12px;box-shadow:inset 0 -4px 0 rgba(0,0,0,.18)}
+.foot{text-align:center;color:var(--muted);display:flex;flex-direction:column;gap:10px;align-items:center}
+.switch{background:none;border:0;color:var(--accent);font-weight:800;text-decoration:underline;font-size:1rem}
+
+.confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:50}
+.confetti span{position:absolute;top:-20px;width:10px;height:14px;border-radius:2px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+/* ---------- som, guia e animação ---------- */
+.wrap{padding-block:20px 160px}
+.start{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding-block:24px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));background:rgba(20,30,24,.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.start-card{background:var(--card);color:var(--ink);border-radius:24px;padding:26px 22px;max-width:380px;width:100%;text-align:center;display:flex;flex-direction:column;gap:12px;align-items:center;box-shadow:0 20px 60px rgba(0,0,0,.35);animation:popin .5s cubic-bezier(.3,1.6,.5,1)}
+.start-card .guide-face{width:118px;height:118px}
+.start-card p{color:var(--muted)}
+@keyframes popin{from{transform:scale(.85)}}
+.big-btn{font-size:1.2rem;padding:15px 22px;width:100%;font-family:var(--f-display);font-weight:400;letter-spacing:.5px}
+.ctl{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));right:max(10px,env(safe-area-inset-right,0px));z-index:40;display:flex;gap:6px}
+.ctl button{width:46px;height:46px;border-radius:50%;border:0;background:var(--card);color:var(--ink);box-shadow:0 3px 10px rgba(0,0,0,.22);font-size:1.25rem;position:relative}
+.ctl button[aria-pressed=false]{opacity:.6}
+.ctl button[aria-pressed=false]::after{content:"";position:absolute;left:9px;right:9px;top:50%;height:3px;margin-top:-1.5px;background:#d62828;transform:rotate(-45deg);border-radius:2px}
+.guide{position:fixed;left:max(10px,env(safe-area-inset-left,0px));right:max(10px,env(safe-area-inset-right,0px));bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:40;display:flex;align-items:flex-end;gap:8px;pointer-events:none}
+.guide>*{pointer-events:auto}
+.guide-face{width:76px;height:76px;flex:none;border:0;background:none;padding:0;filter:drop-shadow(0 4px 6px rgba(0,0,0,.3));animation:idle 2.4s ease-in-out infinite}
+.guide-face svg{width:100%;height:100%;display:block}
+.guide.talking .guide-face{animation:talk .32s ease-in-out infinite alternate}
+.guide.talking .mouth{animation:mouth .18s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:center}
+@keyframes mouth{to{transform:scaleY(2.6)}}
+@keyframes idle{50%{transform:translateY(-5px)}}
+@keyframes talk{from{transform:translateY(0) rotate(-5deg)}to{transform:translateY(-7px) rotate(5deg) scale(1.06)}}
+.bubble{position:relative;background:var(--card);color:var(--ink);border:3px solid var(--accent);border-radius:18px 18px 18px 4px;padding:10px 36px 10px 14px;max-width:min(460px,calc(100% - 84px));font-weight:700;font-size:1.02rem;line-height:1.35;box-shadow:0 6px 18px rgba(0,0,0,.2);margin-bottom:34px;animation:popin .3s cubic-bezier(.3,1.6,.5,1)}
+.bubble-x{position:absolute;top:2px;right:6px;border:0;background:none;font-size:1.4rem;line-height:1;color:var(--muted);padding:4px}
+.sparks{position:absolute;width:44px;height:10px;pointer-events:none;margin-left:-22px}
+.sparks i{position:absolute;bottom:0;width:6px;height:6px;border-radius:50%;background:#ffd166;box-shadow:0 0 8px #ff8a3d;opacity:0;animation:spark 2.2s ease-out infinite}
+.sparks i:nth-child(1){left:6px;--dx:-14px}.sparks i:nth-child(2){left:16px;--dx:10px;animation-delay:.4s}.sparks i:nth-child(3){left:24px;--dx:-6px;animation-delay:.8s}.sparks i:nth-child(4){left:30px;--dx:16px;animation-delay:1.2s}.sparks i:nth-child(5){left:12px;--dx:4px;animation-delay:1.6s}.sparks i:nth-child(6){left:36px;--dx:-10px;animation-delay:1.9s}
+@keyframes spark{0%{transform:translate(0,0);opacity:1}100%{transform:translate(var(--dx,8px),-100px) scale(.4);opacity:0}}
+.balloons{position:absolute;left:5%;top:8%;display:flex;gap:6px;pointer-events:none}
+.balloons i{width:clamp(22px,5vw,34px);aspect-ratio:3/4;border-radius:50% 50% 48% 48%;position:relative;animation:float 3s ease-in-out infinite alternate;box-shadow:inset -5px -6px 0 rgba(0,0,0,.12)}
+.balloons i:nth-child(2){animation-delay:-1s;margin-top:14px}.balloons i:nth-child(3){animation-delay:-2s;margin-top:4px}
+.balloons i::after{content:"";position:absolute;top:100%;left:50%;width:1px;height:46px;background:rgba(0,0,0,.3)}
+@keyframes float{to{transform:translateY(-14px) rotate(5deg)}}
+.hero h1,.gate-hero h1{animation:popin .7s cubic-bezier(.3,1.6,.5,1)}
+.big9{animation:wobble 2.6s ease-in-out infinite}
+@keyframes wobble{0%,100%{transform:rotate(8deg)}50%{transform:rotate(-6deg) scale(1.08)}}
+.info{transition:transform .2s}
+.info:hover{transform:translateY(-3px) rotate(-1deg)}
+.plaque{animation:swing 3s ease-in-out infinite;transform-origin:50% -20px}
+@keyframes swing{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+
+<div class="start" id="start">
+  <div class="start-card">
+    <div class="guide-face"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="12" y="51" width="40" height="8" rx="4" fill="#8a5a34" transform="rotate(-8 32 55)"/><rect x="12" y="51" width="40" height="8" rx="4" fill="#6b4122" transform="rotate(8 32 55)"/><path d="M32 3 C44 17 51 28 49 38 C47 48 39 53 32 53 C25 53 17 48 15 38 C13 28 21 21 25 11 C27 19 29 21 31 21 C31 15 30 9 32 3Z" fill="#ff8a3d"/><path d="M32 22 C40 30 43 36 41 42 C39 49 25 49 23 42 C21 36 25 30 32 22Z" fill="#ffd166"/><circle cx="27" cy="35" r="3.2" fill="#2b1a10"/><circle cx="37" cy="35" r="3.2" fill="#2b1a10"/><circle cx="28" cy="34" r="1.1" fill="#fff"/><circle cx="38" cy="34" r="1.1" fill="#fff"/><circle cx="23" cy="40" r="2" fill="#ff6b6b" opacity=".6"/><circle cx="41" cy="40" r="2" fill="#ff6b6b" opacity=".6"/><path class="mouth" d="M28 41 Q32 45 36 41" stroke="#2b1a10" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg></div>
+    <span class="eyebrow">Convite com som</span>
+    <h2>Aumenta o volume!</h2>
+    <p>O Faísca, guia do acampamento, vai te mostrar o convite do Santiago passo a passo.</p>
+    <button class="btn big-btn" id="start-sound">▶ Começar a aventura</button>
+    <button class="switch" id="start-mute">Entrar sem som</button>
+  </div>
+</div>
+<div class="ctl" id="ctl">
+  <button type="button" id="ctl-music" aria-pressed="true" aria-label="Música e efeitos" title="Música e efeitos">🎵</button>
+  <button type="button" id="ctl-voice" aria-pressed="true" aria-label="Voz do guia" title="Voz do guia">🗣️</button>
+</div>
+<div class="guide" id="guide" hidden>
+  <button type="button" class="guide-face" id="guide-face" aria-label="Ouvir o Faísca de novo"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="12" y="51" width="40" height="8" rx="4" fill="#8a5a34" transform="rotate(-8 32 55)"/><rect x="12" y="51" width="40" height="8" rx="4" fill="#6b4122" transform="rotate(8 32 55)"/><path d="M32 3 C44 17 51 28 49 38 C47 48 39 53 32 53 C25 53 17 48 15 38 C13 28 21 21 25 11 C27 19 29 21 31 21 C31 15 30 9 32 3Z" fill="#ff8a3d"/><path d="M32 22 C40 30 43 36 41 42 C39 49 25 49 23 42 C21 36 25 30 32 22Z" fill="#ffd166"/><circle cx="27" cy="35" r="3.2" fill="#2b1a10"/><circle cx="37" cy="35" r="3.2" fill="#2b1a10"/><circle cx="28" cy="34" r="1.1" fill="#fff"/><circle cx="38" cy="34" r="1.1" fill="#fff"/><circle cx="23" cy="40" r="2" fill="#ff6b6b" opacity=".6"/><circle cx="41" cy="40" r="2" fill="#ff6b6b" opacity=".6"/><path class="mouth" d="M28 41 Q32 45 36 41" stroke="#2b1a10" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg></button>
+  <div class="bubble" id="bubble" hidden><p id="bubble-text"></p><button type="button" class="bubble-x" id="bubble-x" aria-label="Fechar balão">×</button></div>
+</div>
+
+<div class="wrap" id="app">
+
+  <!-- ================= PORTEIRA ================= -->
+  <div class="view" id="v-gate">
+    <div class="scene" aria-hidden="true">
+      <svg viewBox="0 0 800 400" preserveAspectRatio="xMidYMax slice">
+        <circle cx="620" cy="110" r="46" fill="#ffe29a" opacity=".9"/>
+        <path d="M0 260 L120 170 L230 240 L360 140 L500 250 L640 160 L800 240 L800 400 L0 400Z" style="fill:var(--hill)" opacity=".7"/>
+        <g style="fill:var(--pine)">
+          <path d="M60 330 L95 230 L130 330Z"/><path d="M110 340 L150 210 L190 340Z"/>
+          <path d="M640 335 L680 215 L720 335Z"/><path d="M700 340 L735 245 L770 340Z"/>
+        </g>
+        <rect x="0" y="330" width="800" height="70" style="fill:var(--pine)"/>
+        <path d="M300 340 L390 210 L480 340Z" style="fill:var(--tent)"/>
+        <path d="M390 210 L370 340 L410 340Z" style="fill:var(--tent2)"/>
+        <g transform="translate(560 300)">
+          <rect x="-30" y="32" width="60" height="8" rx="3" fill="#6b4122" transform="rotate(12)"/>
+          <rect x="-30" y="32" width="60" height="8" rx="3" fill="#8a5a34" transform="rotate(-12)"/>
+          <path class="flame" d="M-20 36 Q-24 4 0 -24 Q24 4 20 36Z" fill="#ff8a3d"/>
+          <path class="flame b" d="M-10 36 Q-12 14 0 -4 Q12 14 10 36Z" fill="#ffd166"/>
+        </g>
+      </svg>
+      <div class="sparks" style="left:70%;top:70%"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    </div>
+    <div class="gate-hero">
+      <span class="plaque">🏕️ Acampamento 9 anos</span>
+      <h1>Santiago te chama pra aventura!</h1>
+      <p class="sub">Antes de abrir o convite, conta pra gente quem está chegando no acampamento.</p>
+    </div>
+    <div class="signpost" id="gate-form">
+      <div class="field">
+        <label for="g-name">Qual é o seu nome?</label>
+        <input id="g-name" type="text" placeholder="Ex.: Lucas, Vó Maria, Prof. Ana" autocomplete="name" maxlength="40">
+      </div>
+      <div class="field">
+        <label>Escolha a sua trilha:</label>
+        <div class="arrows">
+          <button class="arrow" data-go="amigos" data-role="amigo"><span class="ico">🎒</span><span><b>Sou amigo(a) do Santiago</b><small>Colegas e parceiros de brincadeira</small></span></button>
+          <button class="arrow" data-go="familia" data-role="familia"><span class="ico">🏡</span><span><b>Sou da família</b><small>Avós, tios, primos e amigos da família</small></span></button>
+          <button class="arrow" data-go="familia" data-role="prof"><span class="ico">📚</span><span><b>Sou professor(a)</b><small>Equipe da escola do Santiago</small></span></button>
+        </div>
+      </div>
+    </div>
+    <div class="loading" id="gate-loading" hidden>
+      <div class="tentflap">⛺</div>
+      <p class="hand" id="loading-text">Abrindo a barraca…</p>
+    </div>
+  </div>
+
+  <!-- ================= AMIGOS ================= -->
+  <div class="view" id="v-amigos" hidden>
+    <div class="scene" aria-hidden="true">
+      <svg viewBox="0 0 800 400" preserveAspectRatio="xMidYMax slice">
+        <circle cx="120" cy="90" r="40" fill="#ffd166"/>
+        <g fill="#fff" opacity=".9"><ellipse cx="300" cy="80" rx="60" ry="18"/><ellipse cx="340" cy="68" rx="36" ry="20"/><ellipse cx="560" cy="110" rx="50" ry="14"/></g>
+        <path d="M0 270 L150 180 L280 250 L420 160 L560 250 L700 190 L800 240 L800 400 L0 400Z" style="fill:var(--hill)"/>
+        <g style="fill:var(--pine)">
+          <path d="M30 330 L70 200 L110 330Z"/><path d="M90 340 L125 240 L160 340Z"/>
+          <path d="M690 330 L730 210 L770 330Z"/>
+        </g>
+        <rect x="0" y="330" width="800" height="70" fill="#5c8f4a"/>
+        <path d="M200 345 L290 215 L380 345Z" style="fill:var(--tent)"/>
+        <path d="M290 215 L270 345 L310 345Z" style="fill:var(--tent2)"/>
+        <!-- churrasqueira -->
+        <g transform="translate(520 270)">
+          <ellipse class="smoke" cx="40" cy="0" rx="14" ry="10" fill="#fff"/>
+          <ellipse class="smoke s2" cx="60" cy="0" rx="12" ry="9" fill="#fff"/>
+          <ellipse class="smoke s3" cx="80" cy="0" rx="14" ry="10" fill="#fff"/>
+          <rect x="0" y="20" width="120" height="34" rx="6" fill="#333"/>
+          <rect x="0" y="14" width="120" height="8" rx="3" fill="#555"/>
+          <rect x="10" y="54" width="8" height="40" fill="#444"/><rect x="102" y="54" width="8" height="40" fill="#444"/>
+          <g><rect x="14" y="4" width="92" height="3" fill="#d9b382"/><rect x="24" y="0" width="14" height="11" rx="3" fill="#a0522d"/><rect x="44" y="0" width="12" height="11" rx="3" fill="#e85d4a"/><rect x="62" y="0" width="14" height="11" rx="3" fill="#a0522d"/><rect x="82" y="0" width="12" height="11" rx="3" fill="#7fb069"/></g>
+          <path class="flame" d="M30 22 Q34 10 40 20 Q46 8 52 22Z" fill="#ff8a3d"/>
+          <path class="flame b" d="M66 22 Q72 8 78 20 Q84 10 90 22Z" fill="#ffd166"/>
+        </g>
+      </svg>
+      <div class="big9">9<span>ANOS</span></div>
+      <div class="sparks" style="left:66%;top:66%"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="sparks" style="left:76%;top:66%"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    </div>
+    <div class="hero">
+      <p class="greet" id="greet-amigos"></p>
+      <h1>Acampamento do <em>Santiago</em></h1>
+      <p class="lead">Prepara a mochila! Vai ter churrasquinho, brincadeira de acampamento e muita aventura com a turma pra comemorar os 9 anos do Santiago.</p>
+      <div class="infos">
+        <div class="info hl"><span class="i">⏰</span><div><div class="k">Horário</div><div class="v">Das 11h às 18h<small>Um dia inteiro de aventura</small></div></div></div>
+        <div class="info"><span class="i">📅</span><div><div class="k">Quando</div><div class="v js-date"></div></div></div>
+        <div class="info"><span class="i">🍢</span><div><div class="k">Cardápio</div><div class="v">Churrasquinho<small>no acampamento</small></div></div></div>
+      </div>
+    </div>
+
+    <section class="block">
+      <div class="block-head"><span class="eyebrow">Checklist do campista</span><h2>O que vai na mochila?</h2><p>Toque em cada item pra marcar o que já separou.</p></div>
+      <div class="check" id="checklist"></div>
+    </section>
+
+    <section class="block">
+      <div class="block-head"><span class="eyebrow">Treino antes da festa</span><h2>Jogos do acampamento</h2></div>
+      <div class="games">
+        <div class="panel game">
+          <h3>Mestre do Churrasquinho</h3>
+          <p>Tire o espetinho quando ele ficar <b>no ponto</b>. Cru ou queimado perde ponto! Você tem 30 segundos.</p>
+          <div class="game-bar"><span class="chip">Pontos: <b id="g-score">0</b></span><span class="chip">Tempo: <b id="g-time">30</b>s</span><span class="chip">Recorde: <b id="g-best">0</b></span></div>
+          <div class="grill" id="grill"></div>
+          <p class="msg" id="g-msg">Aperte em começar e acenda a churrasqueira!</p>
+          <button class="btn" id="g-start">Começar</button>
+        </div>
+        <div class="panel game">
+          <h3>Memória do Acampamento</h3>
+          <p>Ache os pares das coisas que todo campista precisa.</p>
+          <div class="game-bar"><span class="chip">Jogadas: <b class="m-moves">0</b></span><span class="chip">Pares: <b class="m-pairs">0</b>/8</span></div>
+          <div class="mem" id="mem-amigos"></div>
+          <p class="msg m-msg"></p>
+          <button class="btn wood m-reset">Embaralhar de novo</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="block js-map"></section>
+    <section class="block js-rsvp"></section>
+  </div>
+
+  <!-- ================= FAMÍLIA ================= -->
+  <div class="view" id="v-familia" hidden>
+    <div class="scene" aria-hidden="true">
+      <svg viewBox="0 0 800 400" preserveAspectRatio="xMidYMax slice">
+        <circle cx="400" cy="250" r="90" fill="#ffe29a" opacity=".85"/>
+        <g fill="#fff" opacity=".55"><ellipse cx="180" cy="90" rx="70" ry="14"/><ellipse cx="610" cy="70" rx="60" ry="12"/></g>
+        <path d="M0 280 L160 200 L300 260 L420 210 L560 270 L700 200 L800 250 L800 400 L0 400Z" style="fill:var(--hill)"/>
+        <g style="fill:var(--pine)">
+          <path d="M40 335 L80 215 L120 335Z"/><path d="M680 335 L720 220 L760 335Z"/><path d="M620 340 L650 260 L680 340Z"/>
+        </g>
+        <rect x="0" y="330" width="800" height="70" style="fill:var(--pine)"/>
+        <path d="M150 345 L235 225 L320 345Z" style="fill:var(--tent)"/>
+        <path d="M235 225 L215 345 L255 345Z" style="fill:var(--tent2)"/>
+        <!-- bandeirinhas -->
+        <path d="M330 120 Q470 170 610 120" stroke="#fff" stroke-width="2" fill="none"/>
+        <g><path d="M350 128 L362 152 L374 134Z" fill="#d9547a"/><path d="M390 141 L400 166 L414 146Z" fill="#f2a541"/><path d="M432 150 L442 175 L456 152Z" fill="#fff"/><path d="M476 152 L486 177 L500 150Z" fill="#d9547a"/><path d="M520 146 L530 170 L544 142Z" fill="#f2a541"/><path d="M562 134 L572 158 L586 128Z" fill="#fff"/></g>
+        <!-- mesa com bolo -->
+        <g transform="translate(470 270)">
+          <rect x="0" y="40" width="170" height="10" rx="3" fill="#8a5a34"/><rect x="12" y="50" width="8" height="40" fill="#6b4122"/><rect x="150" y="50" width="8" height="40" fill="#6b4122"/>
+          <rect x="50" y="8" width="70" height="32" rx="6" fill="#fff"/><rect x="50" y="8" width="70" height="8" rx="4" fill="#d9547a"/>
+          <rect x="83" y="-8" width="4" height="16" fill="#fff"/><path class="flame" d="M85 -18 Q80 -10 85 -6 Q90 -10 85 -18Z" fill="#ffb02e"/>
+          <circle cx="20" cy="34" r="6" fill="#f2a541"/><circle cx="32" cy="34" r="6" fill="#e0913a"/><circle cx="140" cy="34" r="6" fill="#f2a541"/><circle cx="152" cy="34" r="6" fill="#e0913a"/>
+        </g>
+      </svg>
+      <div class="big9">9<span>ANOS</span></div>
+      <div class="balloons"><i style="background:#d9547a"></i><i style="background:#f2a541"></i><i style="background:#7fb069"></i></div>
+    </div>
+    <div class="hero">
+      <p class="greet" id="greet-familia"></p>
+      <h1>Santiago faz <em>9 anos</em></h1>
+      <p class="lead" id="lead-familia">O acampamento ganha um fim de tarde especial: bolinho, salgados diversos e a família reunida pra cantar parabéns pro Santiago.</p>
+      <div class="infos">
+        <div class="info hl"><span class="i">⏰</span><div><div class="k">Horário</div><div class="v">A partir das 15h<small>Família e professores</small></div></div></div>
+        <div class="info"><span class="i">📅</span><div><div class="k">Quando</div><div class="v js-date"></div></div></div>
+        <div class="info"><span class="i">🎂</span><div><div class="k">Na mesa</div><div class="v">Bolinho e salgados<small>diversos</small></div></div></div>
+      </div>
+    </div>
+
+    <section class="block">
+      <div class="block-head"><span class="eyebrow">Ensaio do parabéns</span><h2>Brincadeiras pra esquentar</h2></div>
+      <div class="games">
+        <div class="panel game">
+          <h3>Assopre as 9 velinhas</h3>
+          <p>Toque em cada chama o mais rápido que conseguir. Quem bate o recorde?</p>
+          <div class="game-bar"><span class="chip">Tempo: <b id="c-time">0,0</b>s</span><span class="chip">Recorde: <b id="c-best">–</b></span></div>
+          <div class="cake-stage"><div class="cake"><div class="candles" id="candles"></div><div class="tier"></div><div class="tier t2"></div><div class="plate"></div></div></div>
+          <p class="msg" id="c-msg">Toque na primeira chama para começar.</p>
+          <button class="btn" id="c-reset">Acender de novo</button>
+        </div>
+        <div class="panel game">
+          <h3>Memória da Festa</h3>
+          <p>Encontre os pares da mesa de aniversário.</p>
+          <div class="game-bar"><span class="chip">Jogadas: <b class="m-moves">0</b></span><span class="chip">Pares: <b class="m-pairs">0</b>/8</span></div>
+          <div class="mem" id="mem-familia"></div>
+          <p class="msg m-msg"></p>
+          <button class="btn wood m-reset">Embaralhar de novo</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="block js-map"></section>
+    <section class="block js-rsvp"></section>
+  </div>
+
+  <div class="foot" id="foot" hidden>
+    <p>Escolheu a trilha errada?</p>
+    <button class="switch" id="switch">Voltar para a porteira e trocar o convite</button>
+  </div>
+</div>
+
+<template id="tpl-map">
+  <div class="block-head"><span class="eyebrow">Como chegar</span><h2>Mapa do acampamento</h2><p>A festa é na casa do Santiago, bem em frente à escola.</p></div>
+  <div class="panel map-grid">
+    <svg class="map-svg" viewBox="0 0 400 260" role="img" aria-label="Mapa ilustrado: casa 197 na Rua Vinte de Setembro, em frente à Escola Estadual Arthur da Costa e Silva">
+      <rect width="400" height="260" fill="#e7efd9"/>
+      <g fill="#d3e2bf"><rect x="16" y="14" width="110" height="80" rx="8"/><rect x="274" y="14" width="110" height="80" rx="8"/><rect x="16" y="170" width="90" height="76" rx="8"/><rect x="294" y="170" width="90" height="76" rx="8"/></g>
+      <rect x="0" y="108" width="400" height="48" fill="#8d8d8d"/>
+      <path d="M0 132 H400" stroke="#fff" stroke-width="3" stroke-dasharray="14 12"/>
+      <text x="200" y="152" text-anchor="middle" font-family="Baloo 2, sans-serif" font-weight="800" font-size="11" fill="#fff" letter-spacing="1">RUA VINTE DE SETEMBRO</text>
+      <!-- casa -->
+      <g transform="translate(150 22)">
+        <rect x="0" y="34" width="100" height="50" rx="4" fill="#fffaf0" stroke="#6b4122" stroke-width="2"/>
+        <path d="M-8 36 L50 0 L108 36Z" fill="#f26a21"/>
+        <rect x="42" y="56" width="16" height="28" fill="#9b6436"/>
+        <rect x="12" y="48" width="18" height="14" fill="#bfe3f2"/><rect x="70" y="48" width="18" height="14" fill="#bfe3f2"/>
+        <rect x="34" y="18" width="32" height="14" rx="3" fill="#fff"/><text x="50" y="29" text-anchor="middle" font-family="Lilita One, sans-serif" font-size="11" fill="#1d3326">197</text>
+      </g>
+      <g class="pin" transform="translate(200 4)"><path d="M0 26 C-14 10 -12 -6 0 -6 C12 -6 14 10 0 26Z" fill="#d62828" transform="translate(0 4)"/><circle cx="0" cy="6" r="4" fill="#fff"/></g>
+      <!-- escola -->
+      <g transform="translate(120 168)">
+        <rect x="0" y="10" width="160" height="62" rx="4" fill="#f6e7c1" stroke="#9b6436" stroke-width="2"/>
+        <rect x="0" y="0" width="160" height="14" rx="3" fill="#2f5d3f"/>
+        <g fill="#bfe3f2"><rect x="12" y="24" width="18" height="14"/><rect x="40" y="24" width="18" height="14"/><rect x="102" y="24" width="18" height="14"/><rect x="130" y="24" width="18" height="14"/></g>
+        <rect x="70" y="40" width="20" height="32" fill="#9b6436"/>
+        <rect x="76" y="-14" width="2" height="16" fill="#555"/><path d="M78 -14 L94 -9 L78 -4Z" fill="#2f5d3f"/>
+        <text x="80" y="10.5" text-anchor="middle" font-family="Baloo 2, sans-serif" font-weight="800" font-size="8.5" fill="#fff">ESCOLA ESTADUAL</text>
+      </g>
+      <text x="200" y="256" text-anchor="middle" font-family="Baloo 2, sans-serif" font-weight="700" font-size="11" fill="#1d3326">E.E. Arthur da Costa e Silva</text>
+      <!-- seta "em frente" -->
+      <path d="M332 70 C352 110 352 150 332 190" stroke="#d62828" stroke-width="2.5" fill="none" stroke-dasharray="5 5"/>
+      <path d="M326 184 L332 194 L340 186" stroke="#d62828" stroke-width="2.5" fill="none"/>
+      <text x="356" y="134" font-family="Caveat, cursive" font-weight="700" font-size="17" fill="#d62828" text-anchor="middle" transform="rotate(90 356 134)">em frente!</text>
+    </svg>
+    <div class="addr">
+      <span class="eyebrow">Endereço</span>
+      <p class="street">Rua Vinte de Setembro, 197<br>Capivari do Sul / RS</p>
+      <p class="ref">📍 Em frente à Escola Estadual Arthur da Costa e Silva</p>
+      <div class="links">
+        <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=Rua+Vinte+de+Setembro+197+Capivari+do+Sul+RS">Abrir no Google Maps</a>
+        <a class="btn wood" target="_blank" rel="noopener" href="https://waze.com/ul?q=Rua%20Vinte%20de%20Setembro%20197%20Capivari%20do%20Sul%20RS&amp;navigate=yes">Ir com Waze</a>
+        <button class="btn ghost js-copy-addr">Copiar endereço</button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template id="tpl-rsvp">
+  <div class="block-head"><span class="eyebrow">Confirmação</span><h2>Vai acampar com a gente?</h2><p>Preencha e envie a confirmação pelo WhatsApp.</p></div>
+  <form class="panel rsvp">
+    <div class="row2">
+      <div class="field"><label class="js-l-name">Seu nome</label><input type="text" class="js-r-name" maxlength="60" placeholder="Nome de quem vem"></div>
+      <div class="field"><label class="js-l-qty">Quantas pessoas?</label><input type="number" class="js-r-qty" min="1" max="20" value="1"></div>
+    </div>
+    <div class="field"><label class="js-l-note">Recado para o Santiago (opcional)</label><textarea class="js-r-note" rows="2" maxlength="200" placeholder="Feliz aniversário, Santiago!"></textarea></div>
+    <div class="preview js-preview"></div>
+    <div class="links">
+      <a class="wa js-wa" target="_blank" rel="noopener" href="#">Enviar pelo WhatsApp</a>
+      <button type="button" class="btn ghost js-copy-msg">Copiar mensagem</button>
+    </div>
+    <p class="msg js-copy-ok" style="text-align:left"></p>
+  </form>
+</template>
+
+<script>
+/* ===== Som: trilha, efeitos e voz do Faísca ===== */
+const SND={ctx:null,master:null,music:null,sfxG:null,NB:null,started:false,timer:null,step:0,next:0,bpm:132,lead:"square",musicOn:true,voiceOn:true,gen:0};
+try{const p=JSON.parse(localStorage.getItem("santiago9:snd")); if(p){SND.musicOn=p.m!==false; SND.voiceOn=p.v!==false;}}catch(e){}
+function saveSnd(){try{localStorage.setItem("santiago9:snd",JSON.stringify({m:SND.musicOn,v:SND.voiceOn}))}catch(e){}}
+const mf=m=>440*Math.pow(2,(m-69)/12);
+function audioInit(){
+  if(SND.ctx) return;
+  const AC=window.AudioContext||window.webkitAudioContext; if(!AC) return;
+  try{
+    const c=SND.ctx=new AC();
+    SND.master=c.createGain(); SND.master.gain.value=.9; SND.master.connect(c.destination);
+    SND.music=c.createGain(); SND.music.gain.value=.4; SND.music.connect(SND.master);
+    SND.sfxG=c.createGain(); SND.sfxG.gain.value=.8; SND.sfxG.connect(SND.master);
+    const b=c.createBuffer(1,Math.floor(c.sampleRate*.6),c.sampleRate), d=b.getChannelData(0);
+    for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1; SND.NB=b;
+  }catch(e){ SND.ctx=null; }
+}
+function tone(m,t,dur,type,vol,dest){ const c=SND.ctx; if(!c) return; const o=c.createOscillator(),g=c.createGain(); o.type=type; o.frequency.value=mf(m); g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(vol,t+.012); g.gain.exponentialRampToValueAtTime(.0001,t+dur); o.connect(g); g.connect(dest); o.start(t); o.stop(t+dur+.05); }
+function noise(t,dur,vol,hp,dest){ const c=SND.ctx; if(!c) return; const s=c.createBufferSource(),f=c.createBiquadFilter(),g=c.createGain(); s.buffer=SND.NB; f.type="highpass"; f.frequency.value=hp; g.gain.setValueAtTime(vol,t); g.gain.exponentialRampToValueAtTime(.0001,t+dur); s.connect(f); f.connect(g); g.connect(dest); s.start(t); s.stop(t+dur+.02); }
+function kick(t){ const c=SND.ctx,o=c.createOscillator(),g=c.createGain(); o.frequency.setValueAtTime(150,t); o.frequency.exponentialRampToValueAtTime(45,t+.12); g.gain.setValueAtTime(.5,t); g.gain.exponentialRampToValueAtTime(.0001,t+.18); o.connect(g); g.connect(SND.music); o.start(t); o.stop(t+.2); }
+const _=null;
+const LEAD=[72,76,79,76,77,76,74,72, 69,72,76,72,74,72,71,69, 65,69,72,74,76,77,76,72, 74,71,67,71,74,76,74,_, 72,76,79,84,83,79,76,79, 81,79,76,72,74,76,72,69, 77,76,74,72,69,72,74,77, 79,77,74,71,72,_,72,_];
+const ROOTS=[36,33,29,31,36,33,29,31];
+const TRI=[[60,64,67],[57,60,64],[57,60,65],[55,59,62]];
+function playStep(i,t){
+  const bar=i>>3,e=i&7,len=60/SND.bpm/2,M=SND.music;
+  const n=LEAD[i]; if(n!=null) tone(n,t,len*.85,SND.lead,SND.lead==="square"?.05:.1,M);
+  tone(ROOTS[bar]+[0,12,0,12,0,12,7,12][e],t,len*.8,"triangle",.2,M);
+  if(e%2===1) TRI[bar%4].forEach(x=>tone(x,t,len*.5,"triangle",.03,M));
+  if(e%4===0) kick(t);
+  if(e%4===2) noise(t,.1,.12,1500,M);
+  noise(t,.03,.035,7000,M);
+}
+function sched(){ const c=SND.ctx; if(SND.next<c.currentTime) SND.next=c.currentTime+.05; while(SND.next<c.currentTime+.15){ playStep(SND.step,SND.next); SND.next+=60/SND.bpm/2; SND.step=(SND.step+1)%64; } }
+function startMusic(){ if(!SND.ctx||!SND.musicOn||SND.timer) return; try{SND.ctx.resume();}catch(e){} SND.next=SND.ctx.currentTime+.06; SND.timer=setInterval(sched,25); }
+function stopMusic(){ clearInterval(SND.timer); SND.timer=null; }
+function duck(on){ if(SND.music) SND.music.gain.setTargetAtTime(on?.12:.4,SND.ctx.currentTime,.15); }
+function sfx(k){
+  const c=SND.ctx; if(!c||!SND.started||!SND.musicOn) return; const t=c.currentTime+.01,G=SND.sfxG;
+  const seq=(ns,st,type,vol)=>ns.forEach((n,i)=>tone(n,t+i*st,st*1.6,type,vol,G));
+  switch(k){
+    case "click": tone(84,t,.06,"square",.05,G); break;
+    case "pop": { const o=c.createOscillator(),g=c.createGain(); o.type="sine"; o.frequency.setValueAtTime(500,t); o.frequency.exponentialRampToValueAtTime(1400,t+.12); g.gain.setValueAtTime(.18,t); g.gain.exponentialRampToValueAtTime(.0001,t+.16); o.connect(g); g.connect(G); o.start(t); o.stop(t+.2); } break;
+    case "flip": tone(88,t,.05,"triangle",.14,G); break;
+    case "match": seq([76,79,84],.07,"square",.06); break;
+    case "good": seq([84,88],.08,"square",.07); break;
+    case "bad": tone(50,t,.22,"sawtooth",.08,G); break;
+    case "ding": seq([84,91],.09,"triangle",.16); break;
+    case "puff": noise(t,.28,.28,600,G); break;
+    case "sizzle": noise(t,.6,.07,3000,G); break;
+    case "fanfare": seq([67,72,76,79,84],.09,"square",.06); tone(84,t+.45,.7,"triangle",.14,G); break;
+  }
+}
+function parabens(){
+  if(!SND.ctx||!SND.started||!SND.musicOn) return;
+  const wasOn=!!SND.timer; stopMusic();
+  const N=[[67,.75],[67,.25],[69,1],[67,1],[72,1],[71,2],[67,.75],[67,.25],[69,1],[67,1],[74,1],[72,2],[67,.75],[67,.25],[79,1],[76,1],[72,1],[71,1],[69,2],[77,.75],[77,.25],[76,1],[72,1],[74,1],[72,3]];
+  const beat=.42; let t=SND.ctx.currentTime+.1;
+  N.forEach(([m,d])=>{ tone(m,t,d*beat*.95,"triangle",.2,SND.sfxG); tone(m+12,t,d*beat*.6,"square",.03,SND.sfxG); t+=d*beat; });
+  setTimeout(()=>{ if(wasOn) startMusic(); }, N.reduce((s,x)=>s+x[1],0)*beat*1000+400);
+}
+
+/* voz */
+const L=(t,s,id)=>({t,s:s||t,id});
+const REC={}; const AUDIO_BASE=window.AUDIO_BASE||"/audio/";
+const REC_IDS=["gate1","gate2","gate3","nome","trilha_amigos","trilha_familia","amigos1","amigos2","amigos3","amigos4","familia1","familia2","familia3","familia4","prof1","checklist","jogos_amigos","jogos_familia","mapa","rsvp_amigos","rsvp_familia","parabens"];
+function loadRec(){ REC_IDS.forEach(id=>{ try{ const a=new Audio(); a.preload="auto"; a.addEventListener("canplaythrough",()=>{REC[id]=a;},{once:true}); a.addEventListener("error",()=>{},{once:true}); a.src=AUDIO_BASE+id+".mp3"; }catch(e){} }); }
+const hasTTS=("speechSynthesis" in window)&&("SpeechSynthesisUtterance" in window);
+let VOICE=null, VQ=[], speaking=false, lastLines=[], hideT;
+function pickVoice(){ try{ const vs=speechSynthesis.getVoices().filter(v=>/^pt/i.test(v.lang)); const br=vs.filter(v=>/BR/i.test(v.lang)); const pool=br.length?br:vs;
+  const sc=v=>(/natural|neural|online|premium|enhanced/i.test(v.name)?10:0)+(/francisca|thalita|leila|luciana|vit[oó]ria|google/i.test(v.name)?5:0)+(v.localService===false?2:0);
+  VOICE=pool.sort((a,b)=>sc(b)-sc(a))[0]||null; }catch(e){} }
+if(hasTTS){ pickVoice(); try{ speechSynthesis.addEventListener("voiceschanged",pickVoice); }catch(e){} }
+function bubble(text){ document.getElementById("bubble-text").textContent=text; document.getElementById("bubble").hidden=false; clearTimeout(hideT); }
+function bubbleLater(){ clearTimeout(hideT); hideT=setTimeout(()=>{ if(!speaking) document.getElementById("bubble").hidden=true; },6000); }
+function say(lines, replace=true){
+  if(!SND.started||!lines) return;
+  if(replace){ VQ=[]; SND.gen++; if(hasTTS) try{speechSynthesis.cancel();}catch(e){} speaking=false; lastLines=lines.slice(); }
+  else lastLines=lines.slice();
+  VQ.push(...lines); while(VQ.length>5) VQ.shift();
+  if(!speaking) nextLine();
+}
+function nextLine(){
+  const g=document.getElementById("guide"), my=SND.gen, ln=VQ.shift();
+  if(!ln){ speaking=false; g.classList.remove("talking"); duck(false); bubbleLater(); return; }
+  speaking=true; bubble(ln.t); g.classList.add("talking");
+  let done=false; const fin=()=>{ if(done||my!==SND.gen) return; done=true; nextLine(); };
+  if(SND.voiceOn && ln.id && REC[ln.id]){ duck(true); const a=REC[ln.id]; try{ a.currentTime=0; a.onended=fin; a.onerror=fin; const pr=a.play(); if(pr&&pr.catch) pr.catch(()=>setTimeout(fin,2000)); }catch(e){ setTimeout(fin,2000); } setTimeout(fin,(a.duration||8)*1000+1500); return; }
+  if(!SND.voiceOn||!hasTTS){ setTimeout(fin, Math.max(2200, ln.t.length*60)); return; }
+  duck(true); sfx("pop");
+  try{
+    const u=new SpeechSynthesisUtterance(ln.s); u.lang="pt-BR"; if(VOICE) u.voice=VOICE; u.rate=1.2; u.pitch=Math.min(2,1.55+Math.random()*.3);
+    u.onend=fin; u.onerror=fin; speechSynthesis.speak(u);
+  }catch(e){ setTimeout(fin,2200); return; }
+  setTimeout(fin, 4500+ln.s.length*120);
+}
+function nm(){ return (typeof state!=="undefined" && state.name ? state.name : "").trim(); }
+const NARR={
+  gate:()=>[L("Oi, oi, oi! Eu sou o Faísca, o guia do acampamento do Santiago!","Oi, oi, oi! Eu sou o Faísca, o guia do acampamento do Santiago!","gate1"),L("O Santiago vai fazer 9 anos e preparou uma festa de acampamento!","O Santiago vai fazer nove anos e preparou uma festa de acampamento!","gate2"),L("Pra começar, escreve seu nome na plaquinha e escolhe a sua trilha!",null,"gate3")],
+  amigos:()=>[L(`Uhuuul${nm()?", "+nm():""}! Você está na trilha da aventura!`,null,"amigos1"),L("A festa é domingo, 25 de outubro, das 11h às 18h.","A festa é domingo, vinte e cinco de outubro, das onze da manhã às seis da tarde.","amigos2"),L("Vai ter churrasquinho, brincadeira e muita diversão com a turma!",null,"amigos3"),L("Desce a tela que eu vou te mostrando tudo!",null,"amigos4")],
+  familia:()=>{ const p=state.role==="prof"; return [L(p?`Que alegria${nm()?", "+nm():""}! Boas-vindas ao acampamento do Santiago!`:`Que alegria${nm()?", "+nm():""}! Você está na trilha do bolinho!`,null,p?"prof1":"familia1"),L("A festa é domingo, 25 de outubro, a partir das 15h.","A festa é domingo, vinte e cinco de outubro, a partir das três da tarde.","familia2"),L("Vai ter bolinho, salgados e muito parabéns pro Santiago!",null,"familia3"),L("Desce a tela que eu te mostro tudo!",null,"familia4")]; }
+};
+const SEC={
+  checklist:[L("Primeiro, confere a mochila! Toca em cada item que você já separou.",null,"checklist")],
+  jogos_amigos:[L("Hora de treinar! Tira o espetinho quando aparecer \"No ponto!\". Depois tenta o jogo da memória!","Hora de treinar! Tira o espetinho quando aparecer no ponto. Depois tenta o jogo da memória!","jogos_amigos")],
+  jogos_familia:[L("Que tal ensaiar o parabéns? Assopra as 9 velinhas o mais rápido que puder!","Que tal ensaiar o parabéns? Assopra as nove velinhas o mais rápido que puder!","jogos_familia")],
+  mapa:[L("A festa é na casa do Santiago: Rua Vinte de Setembro, 197, bem em frente à Escola Arthur da Costa e Silva.","A festa é na casa do Santiago: rua Vinte de Setembro, cento e noventa e sete, bem em frente à escola Arthur da Costa e Silva.","mapa")],
+  rsvp_amigos:[L("Por último, confirma sua presença pelo WhatsApp. O Santiago está te esperando!",null,"rsvp_amigos")],
+  rsvp_familia:[L("Agora é só confirmar sua presença pelo WhatsApp. Vai ser muito especial ter você lá!",null,"rsvp_familia")]
+};
+let IO=null, heard=new Set();
+function onView(view){
+  if(!SND.started) return;
+  SND.bpm = view==="familia"?118:view==="amigos"?142:130;
+  SND.lead = view==="familia"?"triangle":"square";
+  say(NARR[view]());
+  heard=new Set(); if(IO) IO.disconnect();
+  if(view==="gate"||!("IntersectionObserver" in window)) return;
+  const root=document.getElementById("v-"+view), targets=[];
+  if(view==="amigos") targets.push([document.getElementById("checklist").closest("section"),"checklist"]);
+  targets.push([root.querySelector(".games").closest("section"),"jogos_"+view],[root.querySelector(".js-map"),"mapa"],[root.querySelector(".js-rsvp"),"rsvp_"+view]);
+  IO=new IntersectionObserver(es=>es.forEach(en=>{ if(en.isIntersecting){ const k=en.target.dataset.say; if(!heard.has(k)){ heard.add(k); say(SEC[k],false); } } }),{threshold:.4});
+  targets.forEach(([el,k])=>{ el.dataset.say=k; IO.observe(el); });
+}
+function syncCtl(){ document.getElementById("ctl-music").setAttribute("aria-pressed",SND.musicOn); document.getElementById("ctl-voice").setAttribute("aria-pressed",SND.voiceOn); }
+function begin(withSound){
+  SND.started=true;
+  if(!withSound){ SND.musicOn=false; SND.voiceOn=false; }
+  audioInit(); loadRec(); syncCtl(); startMusic();
+  document.getElementById("start").hidden=true; document.getElementById("guide").hidden=false;
+  onView(typeof state!=="undefined"?state.view:"gate");
+}
+document.getElementById("start-sound").addEventListener("click",()=>{ SND.musicOn=true; SND.voiceOn=true; begin(true); });
+document.getElementById("start-mute").addEventListener("click",()=>begin(false));
+document.getElementById("ctl-music").addEventListener("click",()=>{ SND.musicOn=!SND.musicOn; audioInit(); SND.musicOn?startMusic():stopMusic(); syncCtl(); saveSnd(); });
+document.getElementById("ctl-voice").addEventListener("click",()=>{ SND.voiceOn=!SND.voiceOn; if(!SND.voiceOn&&hasTTS) try{speechSynthesis.cancel();}catch(e){} syncCtl(); saveSnd(); if(SND.voiceOn&&SND.started) say(lastLines.length?lastLines:NARR[state.view]()); });
+document.getElementById("guide-face").addEventListener("click",()=>{ if(!SND.voiceOn){ SND.voiceOn=true; syncCtl(); } say(lastLines.length?lastLines:NARR[state.view]()); });
+document.getElementById("bubble-x").addEventListener("click",()=>{ document.getElementById("bubble").hidden=true; });
+document.addEventListener("visibilitychange",()=>{ if(document.hidden){ stopMusic(); if(hasTTS) try{speechSynthesis.cancel();}catch(e){} } else if(SND.started) startMusic(); });
+let nameSaid=false, nT;
+document.getElementById("g-name").addEventListener("input",e=>{ clearTimeout(nT); const v=e.target.value.trim(); if(v.length<2||nameSaid) return; nT=setTimeout(()=>{ nameSaid=true; say([L(`Que nome legal, ${v}! Agora escolhe a sua trilha: amigo, família ou professor.`,null,"nome")]); },1400); });
+syncCtl();
+</script>
+<script>
+/* ===== Dados da festa: edite aqui ===== */
+const FESTA = {
+  data: "Domingo, 25/10<small>25 de outubro</small>",
+  whatsapp: "5551996555356"
+};
+const ENDERECO = "Rua Vinte de Setembro, 197 - Capivari do Sul/RS (em frente à Escola Estadual Arthur da Costa e Silva)";
+
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => [...r.querySelectorAll(s)];
+const store = {
+  get(k){ try{ return JSON.parse(localStorage.getItem("santiago9:"+k)); }catch(e){ return null; } },
+  set(k,v){ try{ localStorage.setItem("santiago9:"+k, JSON.stringify(v)); }catch(e){} }
+};
+const state = { name: store.get("name") || "", role: store.get("role") || "", view: "gate" };
+
+/* datas */
+$$(".js-date").forEach(el => el.innerHTML = FESTA.data ? FESTA.data : 'Em breve<small>data a confirmar</small>');
+
+/* clones de mapa e RSVP */
+$$(".js-map").forEach(s => s.appendChild($("#tpl-map").content.cloneNode(true)));
+$$(".js-rsvp").forEach(s => s.appendChild($("#tpl-rsvp").content.cloneNode(true)));
+
+/* ===== navegação ===== */
+function show(view){
+  state.view = view;
+  ["gate","amigos","familia"].forEach(v => $("#v-"+v).hidden = v !== view);
+  document.body.className = view === "gate" ? "" : view;
+  $("#foot").hidden = view === "gate";
+  if(view !== "gate") setupView(view);
+  try{ history.replaceState(null,"", view==="gate" ? location.pathname : "#"+view); }catch(e){}
+  window.scrollTo(0,0);
+  onView(view);
+}
+function setupView(view){
+  const n = state.name.trim();
+  if(view === "amigos"){
+    $("#greet-amigos").textContent = n ? `${n}, você foi convocado(a) pra aventura!` : "Você foi convocado(a) pra aventura!";
+  } else {
+    const prof = state.role === "prof";
+    $("#greet-familia").textContent = n
+      ? (prof ? `${n}, que alegria ter você com a gente!` : `${n}, sua presença é o melhor presente!`)
+      : (prof ? "Professor(a), que alegria ter você com a gente!" : "Sua presença é o melhor presente!");
+    $("#lead-familia").textContent = prof
+      ? "No fim da tarde o acampamento recebe a família e os professores do Santiago: bolinho, salgados diversos e um parabéns bem animado."
+      : "O acampamento ganha um fim de tarde especial: bolinho, salgados diversos e a família reunida pra cantar parabéns pro Santiago.";
+  }
+  const r = $("#v-"+view+" .js-r-name");
+  if(r && !r.value && n) r.value = n;
+  updateRsvp($("#v-"+view+" .rsvp"), view);
+}
+
+$$(".arrow").forEach(b => b.addEventListener("click", () => {
+  state.name = $("#g-name").value.trim();
+  state.role = b.dataset.role;
+  sfx("fanfare"); clearTimeout(nT); nameSaid=true;
+  say([L(b.dataset.go==="amigos" ? "Partiu, trilha da aventura!" : "Oba! Trilha do bolinho!", null, b.dataset.go==="amigos"?"trilha_amigos":"trilha_familia")]);
+  store.set("name", state.name); store.set("role", state.role);
+  $("#gate-form").hidden = true; $("#gate-loading").hidden = false;
+  $("#loading-text").textContent = b.dataset.go === "amigos" ? "Acendendo a churrasqueira…" : "Arrumando a mesa do bolo…";
+  setTimeout(() => { $("#gate-form").hidden = false; $("#gate-loading").hidden = true; show(b.dataset.go); }, 1300);
+}));
+$("#g-name").value = state.name;
+$("#switch").addEventListener("click", () => show("gate"));
+
+/* ===== checklist ===== */
+const ITENS = ["Roupa confortável que pode sujar","Boné ou chapéu","Protetor solar","Garrafinha de água","Muita disposição pra brincar","Fome de churrasquinho"];
+const checked = store.get("check") || [];
+ITENS.forEach((t,i) => {
+  const b = document.createElement("button");
+  b.type="button"; b.setAttribute("aria-pressed", checked.includes(i) ? "true":"false");
+  b.innerHTML = `<span class="box"></span><span>${t}</span>`;
+  b.addEventListener("click", () => {
+    const on = b.getAttribute("aria-pressed") !== "true";
+    b.setAttribute("aria-pressed", on); sfx(on?"ding":"click");
+    const cur = $$("#checklist button").map((x,j)=> x.getAttribute("aria-pressed")==="true"?j:-1).filter(j=>j>=0);
+    store.set("check", cur);
+    if(cur.length === ITENS.length) confetti();
+  });
+  $("#checklist").appendChild(b);
+});
+
+/* ===== confete ===== */
+function confetti(silent){
+  if(!silent) sfx("fanfare");
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const box = document.createElement("div"); box.className="confetti";
+  const cols = ["#f26a21","#ffd166","#2f5d3f","#d9547a","#7fb069","#f2a541"];
+  for(let i=0;i<70;i++){
+    const s=document.createElement("span");
+    s.style.left=Math.random()*100+"vw"; s.style.background=cols[i%cols.length];
+    s.style.animationDuration=(1.8+Math.random()*1.8)+"s"; s.style.animationDelay=(Math.random()*.6)+"s";
+    box.appendChild(s);
+  }
+  document.body.appendChild(box); setTimeout(()=>box.remove(),4200);
+}
+
+/* ===== jogo: churrasquinho ===== */
+const G = { slots:[], score:0, time:30, timer:null, best: store.get("grillBest")||0 };
+$("#g-best").textContent = G.best;
+for(let i=0;i<4;i++){
+  const s = document.createElement("button");
+  s.type="button"; s.className="slot empty"; s.setAttribute("aria-label","Espetinho "+(i+1));
+  s.innerHTML = '<span class="skewer"><i></i><i></i><i></i></span>';
+  s.addEventListener("pointerdown", e => { e.preventDefault(); pick(i); });
+  s.addEventListener("keydown", e => { if(e.key==="Enter"||e.key===" "){ e.preventDefault(); pick(i);} });
+  $("#grill").appendChild(s);
+  G.slots.push({el:s, on:false, cook:0, speed:0});
+}
+const lerp=(a,b,t)=>a.map((v,i)=>Math.round(v+(b[i]-v)*t));
+const RAW=[244,163,163], COOKED=[200,110,60], DONE=[150,80,35], BURNT=[45,28,20];
+function meatColor(c){
+  let rgb = c<55 ? lerp(RAW,COOKED,c/55) : c<=82 ? lerp(COOKED,DONE,(c-55)/27) : lerp(DONE,BURNT,Math.min(1,(c-82)/18));
+  return `rgb(${rgb})`;
+}
+function vegColor(c){ return `rgb(${c<82 ? lerp([232,93,74],[180,70,40],c/82) : lerp([180,70,40],BURNT,Math.min(1,(c-82)/18))})`; }
+function paint(sl){
+  const k = sl.el.querySelector(".skewer");
+  k.style.setProperty("--meat", meatColor(sl.cook)); k.style.setProperty("--veg", vegColor(sl.cook));
+  sl.el.classList.toggle("empty", !sl.on);
+  sl.el.classList.toggle("ponto", sl.on && sl.cook>=55 && sl.cook<=82);
+}
+function pop(sl, txt){ const p=document.createElement("span"); p.className="pop"; p.textContent=txt; sl.el.appendChild(p); setTimeout(()=>p.remove(),800); }
+function pick(i){
+  const sl=G.slots[i]; if(!G.timer || !sl.on) return;
+  let d, t;
+  if(sl.cook<55){ d=-1; t="Crua! −1"; }
+  else if(sl.cook<=82){ d=3; t="No ponto! +3"; }
+  else { d=1; t="Tostadinho +1"; }
+  G.score+=d; sfx(d>=3?"good":d>0?"click":"bad"); pop(sl,t); sl.on=false; sl.cook=0; paint(sl); $("#g-score").textContent=G.score;
+}
+function grillTick(){
+  G.time = Math.max(0, G.time-0.1); $("#g-time").textContent = Math.ceil(G.time);
+  G.slots.forEach(sl => {
+    if(!sl.on){ if(Math.random()<0.035){ sl.on=true; sl.cook=0; sl.speed=1.7+Math.random()*1.1; } }
+    else { sl.cook += sl.speed; if(sl.cook>=100){ G.score-=2; sfx("bad"); pop(sl,"Queimou! −2"); sl.on=false; sl.cook=0; $("#g-score").textContent=G.score; } }
+    paint(sl);
+  });
+  if(G.time<=0) endGrill();
+}
+function endGrill(){
+  clearInterval(G.timer); G.timer=null;
+  G.slots.forEach(sl=>{sl.on=false;sl.cook=0;paint(sl);});
+  let m = G.score>=30 ? "Mestre Churrasqueiro! O Santiago vai te chamar pra grelha 🔥" : G.score>=15 ? "Mandou bem! Mais um treino e vira mestre." : "A churrasqueira venceu essa. Bora de novo?";
+  if(G.score>G.best){ G.best=G.score; store.set("grillBest",G.best); $("#g-best").textContent=G.best; m="Novo recorde! "+m; confetti(); }
+  $("#g-msg").textContent = `Você fez ${G.score} pontos. ${m}`;
+  say([L(`Você fez ${G.score} pontos! ${G.score>=30?"Você é o mestre do churrasquinho!":"Bora tentar de novo?"}`)]);
+  $("#g-start").textContent="Jogar de novo"; $("#g-start").hidden=false;
+}
+$("#g-start").addEventListener("click", () => {
+  G.score=0; G.time=30; $("#g-score").textContent=0; $("#g-time").textContent=30;
+  $("#g-msg").textContent="Fique de olho no sinal “No ponto!”"; $("#g-start").hidden=true; sfx("sizzle");
+  G.timer=setInterval(grillTick,100);
+});
+
+/* ===== jogo: memória ===== */
+function memory(root, icons){
+  const grid = $(".mem", root), movesEl=$(".m-moves",root), pairsEl=$(".m-pairs",root), msg=$(".m-msg",root);
+  let open=[], moves=0, pairs=0, lock=false;
+  function deal(){
+    grid.innerHTML=""; open=[]; moves=0; pairs=0; lock=false; movesEl.textContent=0; pairsEl.textContent=0; msg.textContent="";
+    const deck=[...icons,...icons].map(v=>({v,r:Math.random()})).sort((a,b)=>a.r-b.r).map(o=>o.v);
+    deck.forEach(v=>{
+      const c=document.createElement("button"); c.type="button"; c.className="card"; c.dataset.v=v; c.setAttribute("aria-label","Carta virada");
+      c.innerHTML=`<span class="face front">S9</span><span class="face back">${v}</span>`;
+      c.addEventListener("click",()=>flip(c)); grid.appendChild(c);
+    });
+  }
+  function flip(c){
+    if(lock||c.classList.contains("open")) return;
+    sfx("flip"); c.classList.add("open"); c.setAttribute("aria-label",c.dataset.v); open.push(c);
+    if(open.length===2){
+      moves++; movesEl.textContent=moves;
+      const [a,b]=open;
+      if(a.dataset.v===b.dataset.v){ a.classList.add("done"); b.classList.add("done"); sfx("match"); open=[]; pairs++; pairsEl.textContent=pairs;
+        if(pairs===icons.length){ msg.textContent=`Completou em ${moves} jogadas! Você tá pronto(a) pra festa.`; confetti(); say([L(`Uau! Completou a memória em ${moves} jogadas!`)]); } }
+      else { lock=true; setTimeout(()=>{ a.classList.remove("open"); b.classList.remove("open"); a.setAttribute("aria-label","Carta virada"); b.setAttribute("aria-label","Carta virada"); open=[]; lock=false; },800); }
+    }
+  }
+  $(".m-reset",root).addEventListener("click",deal); deal();
+}
+memory($("#mem-amigos").closest(".game"), ["⛺","🔥","🌲","🔦","🍢","🎒","🦉","🧭"]);
+memory($("#mem-familia").closest(".game"), ["🎂","🧁","🎈","🎁","🥪","🥤","⛺","🌟"]);
+
+/* ===== jogo: velinhas ===== */
+const C = { start:0, raf:0, best: store.get("candleBest") };
+const fmt = s => s.toFixed(1).replace(".",",");
+if(C.best) $("#c-best").textContent = fmt(C.best)+"s";
+function buildCandles(){
+  cancelAnimationFrame(C.raf); C.start=0; $("#c-time").textContent="0,0"; $("#c-msg").textContent="Toque na primeira chama para começar.";
+  const box=$("#candles"); box.innerHTML="";
+  for(let i=0;i<9;i++){
+    const b=document.createElement("button"); b.type="button"; b.className="candle"; b.setAttribute("aria-label","Velinha "+(i+1)+" acesa");
+    b.innerHTML='<span class="fl"></span><span class="wick"></span><span class="stick"></span>';
+    b.addEventListener("pointerdown",e=>{e.preventDefault();blow(b);});
+    b.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();blow(b);}});
+    box.appendChild(b);
+  }
+}
+function blow(b){
+  if(b.classList.contains("out")) return;
+  if(!C.start){ C.start=performance.now(); const loop=()=>{ $("#c-time").textContent=fmt((performance.now()-C.start)/1000); C.raf=requestAnimationFrame(loop); }; loop(); }
+  b.classList.add("out"); b.setAttribute("aria-label","Velinha apagada"); sfx("puff");
+  const left = $$("#candles .candle:not(.out)").length;
+  if(left){ $("#c-msg").textContent=`Faltam ${left}!`; return; }
+  cancelAnimationFrame(C.raf);
+  const t=(performance.now()-C.start)/1000; $("#c-time").textContent=fmt(t);
+  let m=`Apagou as 9 em ${fmt(t)}s! Parabéns, Santiago!`;
+  if(!C.best || t<C.best){ C.best=t; store.set("candleBest",t); $("#c-best").textContent=fmt(t)+"s"; m="Novo recorde! "+m; }
+  $("#c-msg").textContent=m; confetti(true); parabens();
+  say([L("Parabéns pra você, Santiago!",null,"parabens")]);
+}
+$("#c-reset").addEventListener("click",buildCandles); buildCandles();
+
+/* ===== confirmação ===== */
+function rsvpText(form, view){
+  const nome=$(".js-r-name",form).value.trim()||"(seu nome)";
+  const qtd=Math.max(1,parseInt($(".js-r-qty",form).value)||1);
+  const recado=$(".js-r-note",form).value.trim();
+  const hora = view==="amigos" ? "das 11h às 18h (churrasquinho com os amigos)" : "a partir das 15h (bolinho com a família e professores)";
+  let t=`Oi! Aqui é ${nome}. Confirmo presença no aniversário de 9 anos do Santiago, domingo 25/10, ${hora}.\nSeremos ${qtd} ${qtd>1?"pessoas":"pessoa"}.`;
+  if(recado) t+=`\nRecado pro Santiago: ${recado}`;
+  return t;
+}
+function updateRsvp(form, view){
+  const t=rsvpText(form,view);
+  $(".js-preview",form).textContent=t;
+  const base = FESTA.whatsapp ? "https://wa.me/"+FESTA.whatsapp.replace(/\D/g,"") : "https://wa.me/";
+  $(".js-wa",form).href = base+"?text="+encodeURIComponent(t);
+}
+async function copyText(t, okEl, okMsg){
+  try{ await navigator.clipboard.writeText(t); okEl.textContent=okMsg; }
+  catch(e){ okEl.textContent="Não deu pra copiar automaticamente. Selecione o texto e copie: "+t; }
+}
+["amigos","familia"].forEach(view=>{
+  const v=$("#v-"+view), form=$(".rsvp",v);
+  form.addEventListener("input",()=>updateRsvp(form,view));
+  form.addEventListener("submit",e=>e.preventDefault());
+  $(".js-copy-msg",form).addEventListener("click",()=>copyText(rsvpText(form,view),$(".js-copy-ok",form),"Mensagem copiada! É só colar no WhatsApp."));
+  $(".js-copy-addr",v).addEventListener("click",e=>{ const b=e.currentTarget; navigator.clipboard?.writeText(ENDERECO).then(()=>{b.textContent="Endereço copiado!";setTimeout(()=>b.textContent="Copiar endereço",1800);}).catch(()=>{b.textContent=ENDERECO;}); });
+  const qty=$(".js-r-qty",form); if(view==="amigos") qty.closest(".field").querySelector("label").textContent="Quantos amigos?";
+});
+
+/* ===== início: link direto #amigos ou #familia ===== */
+const h = location.hash.replace("#","") || (window.START_VIEW||"");
+if(h==="amigos"||h==="familia"){ if(h==="familia" && state.role==="amigo") state.role="familia"; show(h); } else show("gate");
+</script>
+
+</body>
+</html>
