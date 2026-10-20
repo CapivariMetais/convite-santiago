@@ -686,7 +686,7 @@ const store = {
   get(k){ try{ return JSON.parse(localStorage.getItem("santiago9:"+k)); }catch(e){ return null; } },
   set(k,v){ try{ localStorage.setItem("santiago9:"+k, JSON.stringify(v)); }catch(e){} }
 };
-const state = { name: store.get("name") || "", role: store.get("role") || "", view: "gate" };
+const state = { name: "", role: store.get("role") || "", view: "gate" };
 
 /* datas */
 $$(".js-date").forEach(el => el.innerHTML = FESTA.data ? FESTA.data : 'Em breve<small>data a confirmar</small>');
@@ -729,12 +729,12 @@ $$(".arrow").forEach(b => b.addEventListener("click", () => {
   state.role = b.dataset.role;
   sfx("fanfare"); clearTimeout(nT); nameSaid=true;
   say([L(b.dataset.go==="amigos" ? "Partiu, trilha da aventura!" : "Oba! Trilha do bolinho!", null, b.dataset.go==="amigos"?"trilha_amigos":"trilha_familia")]);
-  store.set("name", state.name); store.set("role", state.role);
+  store.set("role", state.role);
   $("#gate-form").hidden = true; $("#gate-loading").hidden = false;
   $("#loading-text").textContent = b.dataset.go === "amigos" ? "Acendendo a churrasqueira…" : "Arrumando a mesa do bolo…";
   setTimeout(() => { $("#gate-form").hidden = false; $("#gate-loading").hidden = true; show(b.dataset.go); }, 1300);
 }));
-$("#g-name").value = state.name;
+$("#g-name").value = "";
 $("#switch").addEventListener("click", () => show("gate"));
 
 /* ===== checklist ===== */
