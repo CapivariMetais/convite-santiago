@@ -239,6 +239,13 @@ section.block{display:flex;flex-direction:column;gap:14px}
 .info:hover{transform:translateY(-3px) rotate(-1deg)}
 .plaque{animation:swing 3s ease-in-out infinite;transform-origin:50% -20px}
 @keyframes swing{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+.countdown{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.countdown .u{background:var(--wood);color:#fff4df;border-radius:12px;min-width:64px;padding:8px 6px 6px;box-shadow:inset 0 -5px 0 var(--wood-dark);text-align:center}
+.countdown .u b{display:block;font-family:var(--f-display);font-weight:400;font-size:1.9rem;line-height:1;font-variant-numeric:tabular-nums}
+.countdown .u small{font-size:.7rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;opacity:.9}
+.cd-wrap{display:flex;flex-direction:column;gap:6px;align-items:center}
+.cd-label{font-weight:800;font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.cd-done{font-family:var(--f-display);font-size:1.5rem;color:var(--accent)}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 
@@ -246,6 +253,7 @@ section.block{display:flex;flex-direction:column;gap:14px}
   <div class="start-card">
     <div class="guide-face"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="12" y="51" width="40" height="8" rx="4" fill="#8a5a34" transform="rotate(-8 32 55)"/><rect x="12" y="51" width="40" height="8" rx="4" fill="#6b4122" transform="rotate(8 32 55)"/><path d="M32 3 C44 17 51 28 49 38 C47 48 39 53 32 53 C25 53 17 48 15 38 C13 28 21 21 25 11 C27 19 29 21 31 21 C31 15 30 9 32 3Z" fill="#ff8a3d"/><path d="M32 22 C40 30 43 36 41 42 C39 49 25 49 23 42 C21 36 25 30 32 22Z" fill="#ffd166"/><circle cx="27" cy="35" r="3.2" fill="#2b1a10"/><circle cx="37" cy="35" r="3.2" fill="#2b1a10"/><circle cx="28" cy="34" r="1.1" fill="#fff"/><circle cx="38" cy="34" r="1.1" fill="#fff"/><circle cx="23" cy="40" r="2" fill="#ff6b6b" opacity=".6"/><circle cx="41" cy="40" r="2" fill="#ff6b6b" opacity=".6"/><path class="mouth" d="M28 41 Q32 45 36 41" stroke="#2b1a10" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg></div>
     <span class="eyebrow">Convite com som</span>
+    <div class="cd-wrap"><span class="cd-label js-cd-label">Faltam para a festa</span><div class="countdown js-cd"></div></div>
     <h2>Aumenta o volume!</h2>
     <p>Tem trilha sonora de acampamento! O Faísca, guia do acampamento, vai te mostrar o convite do Santiago passo a passo.</p>
     <button class="btn big-btn" id="start-sound">▶ Começar a aventura</button>
@@ -288,6 +296,7 @@ section.block{display:flex;flex-direction:column;gap:14px}
     <div class="gate-hero">
       <span class="plaque">🏕️ Acampamento 9 anos</span>
       <h1>Santiago te chama pra aventura!</h1>
+      <div class="cd-wrap"><span class="cd-label js-cd-label">Faltam para a festa</span><div class="countdown js-cd"></div></div>
       <p class="sub">Antes de abrir o convite, conta pra gente quem está chegando no acampamento.</p>
     </div>
     <div class="signpost" id="gate-form">
@@ -902,6 +911,20 @@ async function copyText(t, okEl, okMsg){
   $(".js-copy-addr",v).addEventListener("click",e=>{ const b=e.currentTarget; navigator.clipboard?.writeText(ENDERECO).then(()=>{b.textContent="Endereço copiado!";setTimeout(()=>b.textContent="Copiar endereço",1800);}).catch(()=>{b.textContent=ENDERECO;}); });
   const qty=$(".js-r-qty",form); if(view==="amigos") qty.closest(".field").querySelector("label").textContent="Quantos amigos?";
 });
+
+/* ===== contagem regressiva ===== */
+function cdTarget(){ return new Date(state.view==="familia" ? "2026-10-25T15:00:00-03:00" : "2026-10-25T11:00:00-03:00").getTime(); }
+function tickCd(){
+  const diff=cdTarget()-Date.now();
+  $$(".js-cd").forEach(el=>{
+    if(diff<=0){ el.innerHTML='<span class="cd-done">É hoje! A festa já começou 🎉</span>'; return; }
+    const d=Math.floor(diff/864e5), h=Math.floor(diff/36e5)%24, m=Math.floor(diff/6e4)%60, sec=Math.floor(diff/1e3)%60;
+    const u=(n,l)=>`<span class="u"><b>${String(n).padStart(2,"0")}</b><small>${l}</small></span>`;
+    el.innerHTML=u(d,d===1?"dia":"dias")+u(h,"horas")+u(m,"min")+u(sec,"seg");
+  });
+  $$(".js-cd-label").forEach(el=>el.hidden = diff<=0);
+}
+tickCd(); setInterval(tickCd,1000);
 
 /* ===== início: link direto #amigos ou #familia ===== */
 const h = location.hash.replace("#","") || (window.START_VIEW||"");
