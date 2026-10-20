@@ -20,7 +20,7 @@
 <meta name="theme-color" content="#1e3a2d">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M32 3 C44 17 51 28 49 38 C47 48 39 53 32 53 C25 53 17 48 15 38 C13 28 21 21 25 11 C27 19 29 21 31 21 C31 15 30 9 32 3Z' fill='%23ff8a3d'/%3E%3C/svg%3E">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
-<script>window.START_VIEW='amigos';</script>
+<script>window.START_VIEW='amigos';window.MUSIC_SRC="/musica.mp3";</script>
 </head>
 <body>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -560,9 +560,12 @@ function playStep(i,t){
   noise(t,.03,.035,7000,M);
 }
 function sched(){ const c=SND.ctx; if(SND.next<c.currentTime) SND.next=c.currentTime+.05; while(SND.next<c.currentTime+.15){ playStep(SND.step,SND.next); SND.next+=60/SND.bpm/2; SND.step=(SND.step+1)%64; } }
-function startMusic(){ if(!SND.ctx||!SND.musicOn||SND.timer) return; try{SND.ctx.resume();}catch(e){} SND.next=SND.ctx.currentTime+.06; SND.timer=setInterval(sched,25); }
-function stopMusic(){ clearInterval(SND.timer); SND.timer=null; }
-function duck(on){ if(SND.music) SND.music.gain.setTargetAtTime(on?.12:.4,SND.ctx.currentTime,.15); }
+/* trilha sonora em arquivo (toca até com o iPhone no silencioso) */
+const BGM=new Audio(); BGM.loop=true; BGM.preload="auto"; BGM.src=window.MUSIC_SRC||"musica.mp3"; BGM.volume=.75;
+BGM.addEventListener("ended",()=>{ if(SND.musicOn&&SND.timer){ BGM.currentTime=0; BGM.play().catch(()=>{}); } });
+function startMusic(){ if(SND.ctx) try{SND.ctx.resume();}catch(e){} if(!SND.musicOn) return; SND.timer=true; try{ const pr=BGM.play(); if(pr&&pr.catch) pr.catch(()=>{}); }catch(e){} }
+function stopMusic(){ SND.timer=null; try{BGM.pause();}catch(e){} }
+function duck(on){ try{ BGM.volume=on?.3:.75; }catch(e){} }
 function sfx(k){
   const c=SND.ctx; if(!c||!SND.started||!SND.musicOn) return; const t=c.currentTime+.01,G=SND.sfxG;
   const seq=(ns,st,type,vol)=>ns.forEach((n,i)=>tone(n,t+i*st,st*1.6,type,vol,G));
